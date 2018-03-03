@@ -506,6 +506,9 @@
 (transient-mark-mode 1)
 ;; No confirmation for large file loading < 500MB
 (setq large-file-warning-threshold 500000000)
+;; move custom-set-* to separate file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 ;; Window configuration
 (when window-system
@@ -608,17 +611,3 @@ When using Homebrew, install it using \"brew install trash\"."
   (if (company-manual-begin)
       (company-complete-common)
     (indent-according-to-mode)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (counsel-osx-app counsel-projectile which-key use-package solarized-theme smex restart-emacs ranger projectile markdown-mode magit gitter general flycheck-pos-tip exec-path-from-shell evil-commentary dumb-jump diminish counsel company ace-jump-mode))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
