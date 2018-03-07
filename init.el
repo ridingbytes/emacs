@@ -324,6 +324,18 @@
    )
 
   :config
+  ;; Prefixed Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   "r"  '(:ignore t :which-key "Ranger")
+   "rr" '(ranger :which-key "Ranger")
+   "rd" '(deer :which-key "Deer")
+   )
+
+
+  ;; remove all buffers on close
   (setq ranger-cleanup-eagerly t)
   )
 
@@ -406,20 +418,21 @@
    "M-z"       'undo
    "C-M-i"     'complete-symbol
    "TAB"       'complete-or-indent
+   "M-s"       'counsel-ag
+   "M-t"       'counsel-projectile
    )
 
+  ;; Key Bindings
   (general-define-key
    :states '(normal)
    "-"   'deer
-   "M-s" 'counsel-ag
-   "M-t" 'counsel-projectile
    )
 
   ;; SPC-Prefixed
   (general-define-key
    :states '(normal visual insert emacs)
-   :prefix "SPC"
-   :non-normal-prefix "M-SPC"
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
 
    "TAB" '(ivy-switch-buffer :which-key "Previous Buffer")
    "SPC" '(counsel-M-x :which-key "M-x")
@@ -430,10 +443,6 @@
    "b"  '(:ignore t :which-key "Buffer")
    "bb" '(ivy-switch-buffer :which-key "Buffers")
    "br" '(counsel-recentf :which-key "Recent Buffers")
-
-   "r"  '(:ignore t :which-key "Ranger")
-   "rr" '(ranger :which-key "Ranger")
-   "rd" '(deer :which-key "Deer")
 
    "c"  '(:ignore t :which-key "Comment")
    "cl" '(evil-commentary-line :which-key "Comment")
