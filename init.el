@@ -1,4 +1,7 @@
 ;; -*- emacs-lisp -*-
+;;
+;; inspired by https://sam217pa.github.io/2016/08/30/how-to-make-your-own-spacemacs
+;; https://github.com/sam217pa/emacs-config/blob/develop/python-config.el
 
 ;; --- Package ---
 (require 'package)
@@ -42,6 +45,22 @@
   :diminish (ace-jump-mode . "ⓐ")
   :bind ("C-j" . ace-jump-mode))
 
+;; Anaconda: Code navigation, documentation lookup and completion for Python
+;; https://github.com/proofit404/anaconda-mode
+(use-package anaconda-mode
+  :config
+
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
+  ;; Anaconda backend for company-mode.
+  ;; https://github.com/proofit404/company-anaconda
+  (use-package company-anaconda
+    :config
+    (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+  )
+
+
 ;; ----------- B ----------
 ;; ----------- C ----------
 
@@ -55,6 +74,7 @@
   )
 
 ;; Company completes anything
+;; https://github.com/company-mode/company-mode
 (use-package company
   :diminish (company-mode . "ⓒ")
   :commands global-company-mode
@@ -69,7 +89,7 @@
    company-show-numbers t)
 
   :config
-  (global-company-mode)
+  (global-company-mode t)
 
   (bind-keys :map company-active-map
     ("C-d" . company-show-doc-buffer)
@@ -90,6 +110,8 @@
            company-files
            company-gtags
            company-etags
+           ;; company-abbrev
+           ;; company-dabbrev
            company-keywords)))
 
   )
@@ -228,6 +250,7 @@
 ;; Git Gutterlus
 ;; https://github.com/nonsequitur/git-gutter-plus
 (use-package git-gutter+
+  :diminish (company-mode . "ⓖ")
   :config
   (global-git-gutter+-mode t)
 
@@ -363,10 +386,16 @@
 )
 
 ;; Python Mode
+;; https://github.com/emacsmirror/python-mode
 (use-package python
   ;; https://github.com/jwiegley/use-package#modes-and-interpreters
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
+  :config
+  (if (executable-find "ipython")
+      (setq python-shell-interpreter "ipython"
+            python-shell-interpreter-args "--simple-prompt -i --pprint")
+    (setq python-shell-interpreter "python"))
   )
 
 ;; ----------- Q ----------
