@@ -28,6 +28,12 @@
 (use-package diminish)
 (use-package bind-key)
 
+;; -------- General Leaders -------
+
+;; Key binding for normal state
+(defvar rb--global-leader "SPC")
+;; Key binding for non-normal state, e.g. insert, visual, command, emacs
+(defvar rb--global-non-normal-leader "C-SPC")
 
 ;; -------- Add-ons -------
 ;; ----------- A ----------
@@ -189,6 +195,32 @@
 ;; Gitter
 ;; https://github.com/xuchunyang/gitter.el
 (use-package gitter)
+
+;; Git Gutterlus
+;; https://github.com/nonsequitur/git-gutter-plus
+(use-package git-gutter+
+  :config
+  (global-git-gutter+-mode t)
+
+  ;; Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   "gg"  '(:ignore t :which-key "Git Gutter")
+   "ggg" '(git-gutter+-show-hunk-inline-at-point :which-key "Show Hunk")
+   "ggp" '(git-gutter+-previous-hunk :which-key "Previous Hunk")
+   "ggn" '(git-gutter+-next-hunk :which-key "Next Hunk")
+   "ggr" '(git-gutter+-do-revert-hunk :which-key "Revert Hunk")
+   "ggs" '(git-gutter+-stage-hunks :which-key "Stage Hunk")
+   "ggd" '(git-gutter+-popup-hunk :which-key "Show Hunk in Popup")
+   )
+
+  ;; git-gutter-fringe+ is a display mode for git-gutter+.el. It uses the buffer
+  ;; fringe instead of the buffer margin.
+  ;; https://github.com/nonsequitur/git-gutter-fringe-plus
+  (use-package git-gutter-fringe+)
+  )
 
 ;; ----------- H ----------
 ;; ----------- I ----------
