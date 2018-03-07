@@ -288,6 +288,38 @@
 ;; ----------- O ----------
 ;; ----------- P ----------
 
+;; Perspective provides tagged workspaces in Emacs, similar to workspaces in windows managers
+;; https://github.com/nex3/perspective-el
+(use-package perspective
+  :config
+  (persp-mode t)
+  ;; Prefixed Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   "p"  '(:ignore t :which-key "Perspective")
+   "ps" '(persp-switch :which-key "Switch")
+   "pn" '(persp-next :which-key "Next")
+   "pp" '(persp-prev :which-key "Previous")
+   "pk" '(persp-kill :which-key "Kill")
+   "pr" '(persp-rename :which-key "Rename")
+   )
+  )
+
+;; Perspective Projectile Integration
+;; https://github.com/bbatsov/persp-projectile
+(use-package persp-projectile
+  :config
+  ;; Prefixed Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   "px" '(projectile-persp-switch-project :which-key "Projectile Switch")
+   )
+  )
+
 ;; Projectile
 ;; https://github.com/bbatsov/projectile
 (use-package projectile
@@ -492,6 +524,9 @@
    "q"  '(:ignore t :which-key "Quit")
    "qr" '(restart-emacs :which-key "Restart")
    "qq" '(kill-emacs :which-key "Quit")
+
+   "t"  '(:ignore t :which-key "Tags")
+   "tr"  '(tags-reset-tags-tables :which-key "Reset")
 
    "x"   '(:ignore t :which-key "Remove")
    "xw"  '(delete-trailing-whitespace :which-key "Trailing Whitespaces")
