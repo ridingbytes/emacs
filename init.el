@@ -148,10 +148,23 @@
   :init (evil-mode t) ; enable evil globally at startup
   )
 
+;; Evil Commentary intends to make it easy to comment out (lines of) code
+;; https://github.com/linktohack/evil-commentary
 (use-package evil-commentary
   :commands (evil-commentary-line)
   )
 
+;; Evil Matchit to jump between matched tags in Emacs
+;; https://github.com/redguardtoo/evil-matchit
+(use-package evil-matchit
+  :commands (evil-matchit-mode)
+  :config
+  (global-evil-matchit-mode t)
+  )
+
+;; Evil Visual Star: Make a visual selection with v or V, and then hit * to
+;; search that selection forward, or # to search that selection backward.
+;; https://github.com/bling/evil-visualstar
 (use-package evil-visualstar
   :commands (evil-visualstar-mode)
   :config
@@ -426,6 +439,20 @@
 ;; ----------- U ----------
 ;; ----------- V ----------
 ;; ----------- W ----------
+
+;; Web Mode
+;; http://web-mode.org
+(use-package web-mode
+  :mode (("\\.html\\'" . web-mode)
+         ("\\.pt\\'"   . web-mode))
+  :config
+  ;; Script/code offset indentation (for JavaScript, Java, PHP, Ruby, Go, VBScript, Python, etc.)
+  (setq web-mode-code-indent-offset 2)
+  ;; CSS offset indentation
+  (setq web-mode-css-indent-offset 2)
+  ;; HTML element offset indentation
+  (setq web-mode-markup-indent-offset 2)
+  )
 
 ;; Which-key displays the key bindings following your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
