@@ -45,6 +45,15 @@
 ;; ----------- B ----------
 ;; ----------- C ----------
 
+;; CoffeeScript
+(use-package coffee-mode
+  :mode (("\\.coffee\\'" . coffee-mode))
+  :config
+  ;; Tab of 2 spaces
+  (custom-set-variables '(coffee-tab-width 2))
+  (custom-set-variables '(coffee-args-compile '("-c" "--no-header")))
+  )
+
 ;; Company completes anything
 (use-package company
   :diminish (company-mode . "ⓒ")
@@ -141,6 +150,13 @@
 
 (use-package evil-commentary
   :commands (evil-commentary-line)
+  )
+
+(use-package evil-visualstar
+  :commands (evil-visualstar-mode)
+  :config
+  (global-evil-visualstar-mode t)
+  (setq evil-visualstar/persistent nil)
   )
 
 ;; Exec PATH from shell
