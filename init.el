@@ -169,8 +169,8 @@
   (setq flycheck-highlighting-mode 'symbols)
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 
-  (setq flycheck-python-pylint-executable "python2")
-  (setq flycheck-python-flake8-executable "python2")
+  (setq flycheck-python-pylint-executable "python")
+  (setq flycheck-python-flake8-executable "python")
 
   ;; http://www.flycheck.org/en/latest/user/error-list.html#tune-error-list-display
   ;; TODO: use [Shackle](https://github.com/wasamasa/shackle)
