@@ -57,9 +57,9 @@
   ;; https://github.com/proofit404/company-anaconda
   (use-package company-anaconda
     :config
-    (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+    (add-to-list 'company-backends '(company-anaconda :with company-capf))
+    )
   )
-
 
 ;; ----------- B ----------
 ;; ----------- C ----------
@@ -100,20 +100,18 @@
     ("C-s" . company-select-previous)
     ("TAB" . company-complete))
 
+  ;; (setq company-backends
   (setq company-backends
-        '((company-css
-           company-clang
-           company-capf
-           company-semantic
-           company-xcode
-           company-cmake
-           company-files
-           company-gtags
-           company-etags
-           ;; company-abbrev
-           ;; company-dabbrev
-           company-keywords)))
-
+        '(
+          (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
+          company-files ;; complete file paths
+          company-keywords ;; complete programming language keywords
+          company-capf ;; bridge to the standard completion-at-point-functions
+                       ;; facility. Supports any major mode that defines a proper completion
+                       ;; function, including emacs-lisp-mode, css-mode and nxml-mode
+          company-dabbrev ;; complete keywords from buffer
+          )
+        )
   )
 
 
@@ -757,5 +755,6 @@ When using Homebrew, install it using \"brew install trash\"."
 (defun complete-or-indent ()
   (interactive)
   (if (company-manual-begin)
-      (company-complete-common)
-    (indent-according-to-mode)))
+      (company-complete)
+    (indent-according-to-mode))
+  )
