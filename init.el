@@ -88,7 +88,11 @@
   :config
   ;; Tab of 2 spaces
   (setq coffee-args-compile '("-c" "--no-header"))
-  (setq coffee-tab-width 2)
+
+  (custom-set-variables
+   '(coffee-indent-like-python-mode t)
+   '(coffee-tab-width 2)
+   )
 
   (defun coffee-custom ()
     "coffee-mode-hook"
