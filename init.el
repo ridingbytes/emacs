@@ -771,14 +771,12 @@ When using Homebrew, install it using \"brew install trash\"."
 ;;   )
 
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html#Startup-Summary
-(add-hook
- 'after-init-hook
+(add-hook 'after-init-hook
  (lambda ()
    (message "After-init hook")
    )
  )
-(add-hook
- 'window-setup-hook
+(add-hook 'window-setup-hook
  (lambda ()
    (message "All loaded and ready to go!")
    )
