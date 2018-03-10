@@ -276,6 +276,10 @@
 ;; https://github.com/xuchunyang/gitter.el
 (use-package gitter)
 
+(use-package github-browse-file
+  :commands (github-browse-file github-browse-file-blame)
+  )
+
 ;; Git Gutterlus
 ;; https://github.com/nonsequitur/git-gutter-plus
 (use-package git-gutter+
@@ -458,15 +462,11 @@
   (setq ranger-cleanup-eagerly t)
   )
 
-
 (use-package recentf
-  :commands (recentf-mode
-             counsel-recentf
-             )
+  :commands (recentf-mode counsel-recentf)
   :config
   (setq recentf-max-saved-items 50)
   )
-
 
 (use-package restart-emacs
   :commands restart-emacs
@@ -512,6 +512,7 @@
   (setq web-mode-markup-indent-offset 2)
   )
 
+
 ;; Which-key displays the key bindings following your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
@@ -528,7 +529,6 @@
 ;; ----------- Z ----------
 
 ;; ------ Key Bindings ------
-
 
 ;; General manages keybindings for Evil and non-evil use cases.
 (use-package general
@@ -676,7 +676,8 @@
 ;; no line-wrap
 (set-default 'truncate-lines t)
 ;; make links clickable by default
-(goto-address-mode t)
+(define-globalized-minor-mode global-goto-address-mode goto-address-mode goto-address-mode)
+(global-goto-address-mode)
 ;; highlight lines
 (global-hl-line-mode t)
 ;; remember cursor position, for emacs 25.1 or later
@@ -721,31 +722,6 @@
 When using Homebrew, install it using \"brew install trash\"."
     (call-process (executable-find "trash") nil nil nil file))
 )
-
-;; hippie expand
-(setq hippie-expand-try-functions-list
-      '(
-        ;; Try to expand word "dynamically", searching the current buffer.
-        try-expand-dabbrev
-        ;; Try to expand word "dynamically", searching all other buffers.
-        try-expand-dabbrev-all-buffers
-        ;; Try to expand word "dynamically", searching the kill ring.
-        try-expand-dabbrev-from-kill
-        ;; Try to complete text as a file name, as many characters as unique.
-        try-complete-file-name-partially
-        ;; Try to complete text as a file name.
-        try-complete-file-name
-        ;; Try to expand word before point according to all abbrev tables.
-        try-expand-all-abbrevs
-        ;; Try to complete the current line to an entire line in the buffer.
-        try-expand-list
-        ;; Try to complete the current line to an entire line in the buffer.
-        try-expand-line
-        ;; Try to complete as an Emacs Lisp symbol, as many characters as
-        ;; unique.
-        try-complete-lisp-symbol-partially
-        ;; Try to complete word as an Emacs Lisp symbol.
-        try-complete-lisp-symbol))
 
 ;; Auto load mode on file extension
 (add-to-list 'auto-mode-alist '("\\.zcml\\'" . xml-mode))
@@ -793,3 +769,17 @@ When using Homebrew, install it using \"brew install trash\"."
 ;;       (company-complete)
 ;;     (indent-according-to-mode))
 ;;   )
+
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html#Startup-Summary
+(add-hook
+ 'after-init-hook
+ (lambda ()
+   (message "After-init hook")
+   )
+ )
+(add-hook
+ 'window-setup-hook
+ (lambda ()
+   (message "All loaded and ready to go!")
+   )
+ )
