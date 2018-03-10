@@ -45,6 +45,24 @@
   :diminish (ace-jump-mode . "ⓐ")
   :bind ("C-j" . ace-jump-mode))
 
+
+;; Ag.el allows you to search using ag from inside Emacs
+;; http://agel.readthedocs.io/en/latest/index.html
+(use-package ag
+  :config
+  (setq ag-highlight-search t)
+  (setq ag-reuse-buffers t)
+
+  ;; Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   "sa" '(ag-project-at-point :which-key "Ag")
+   )
+  )
+
+
 ;; Anaconda: Code navigation, documentation lookup and completion for Python
 ;; https://github.com/proofit404/anaconda-mode
 (use-package anaconda-mode
@@ -69,8 +87,15 @@
   :mode (("\\.coffee\\'" . coffee-mode))
   :config
   ;; Tab of 2 spaces
-  (custom-set-variables '(coffee-tab-width 2))
-  (custom-set-variables '(coffee-args-compile '("-c" "--no-header")))
+  (setq coffee-args-compile '("-c" "--no-header"))
+  (setq coffee-tab-width 2)
+
+  (defun coffee-custom ()
+    "coffee-mode-hook"
+    (set (make-local-variable 'tab-width) 2))
+
+  (add-hook 'coffee-mode-hook
+            '(lambda() (coffee-custom)))
   )
 
 ;; Company completes anything
@@ -92,13 +117,13 @@
   (global-company-mode t)
 
   (bind-keys :map company-active-map
-    ("C-d" . company-show-doc-buffer)
-    ("C-l" . company-show-location)
-    ("C-n" . company-select-next)
-    ("C-p" . company-select-previous)
-    ("C-t" . company-select-next)
-    ("C-s" . company-select-previous)
-    ("TAB" . company-complete))
+             ("C-d" . company-show-doc-buffer)
+             ("C-l" . company-show-location)
+             ("C-n" . company-select-next)
+             ("C-p" . company-select-previous)
+             ("C-t" . company-select-next)
+             ("C-s" . company-select-previous)
+             ("TAB" . company-complete))
 
   ;; (setq company-backends
   (setq company-backends
@@ -107,11 +132,12 @@
           company-files ;; complete file paths
           company-keywords ;; complete programming language keywords
           company-capf ;; bridge to the standard completion-at-point-functions
-                       ;; facility. Supports any major mode that defines a proper completion
-                       ;; function, including emacs-lisp-mode, css-mode and nxml-mode
+          ;; facility. Supports any major mode that defines a proper completion
+          ;; function, including emacs-lisp-mode, css-mode and nxml-mode
           company-dabbrev ;; complete keywords from buffer
           )
         )
+  (setq company-dabbrev-downcase nil)
   )
 
 
@@ -192,7 +218,8 @@
   (setq evil-visualstar/persistent nil)
   )
 
-;; Exec PATH from shell
+;; Exec PATH from shell, so that the PATH matches the one from the terminal
+;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell
   :defer 2
   :commands (exec-path-from-shell-initialize
@@ -573,7 +600,7 @@
    "s"  '(:ignore t :which-key "Search")
    "ss" '(swiper :which-key "Swiper")
    "sf" '(counsel-find-file :which-key "Find")
-   "sg" '(counsel-ag :which-key "Grep")
+   "sg" '(counsel-grep :which-key "Grep")
 
    "q"  '(:ignore t :which-key "Quit")
    "qr" '(restart-emacs :which-key "Restart")
@@ -639,7 +666,9 @@
           (lambda () (y-or-n-p "Do you really want to exit Emacs? "))
           'append)
 ;; highlight delimiters
-(show-paren-mode)
+(show-paren-mode t)
+;; use winner mode
+(winner-mode t)
 ;; no line-wrap
 (set-default 'truncate-lines t)
 ;; make links clickable by default
@@ -655,6 +684,8 @@
 ;; move custom-set-* to separate file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+;; treat underscores as part of the word
+(modify-syntax-entry ?_ "w")
 
 ;; Window configuration
 (when window-system
@@ -752,9 +783,9 @@ When using Homebrew, install it using \"brew install trash\"."
     )
   (insert (format-time-string "%Y-%m-%d")))
 
-(defun complete-or-indent ()
-  (interactive)
-  (if (company-manual-begin)
-      (company-complete)
-    (indent-according-to-mode))
-  )
+;; (defun complete-or-indent ()
+;;   (interactive)
+;;   (if (company-manual-begin)
+;;       (company-complete)
+;;     (indent-according-to-mode))
+;;   )
