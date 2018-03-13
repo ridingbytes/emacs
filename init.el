@@ -105,7 +105,7 @@
 ;; Company completes anything
 ;; https://github.com/company-mode/company-mode
 (use-package company
-  :diminish (company-mode . "ⓒ")
+  :diminish (company-mode . "℀")
   :commands global-company-mode
   :init
   (add-hook 'after-init-hook #'global-company-mode)
@@ -157,6 +157,23 @@
    ("C-c /"   . counsel-ag)        ; search for regexp in git repo using ag
    ("C-c l"   . counsel-locate)    ; search for files or else using locate
    )
+  :config
+
+  ;; Prefixed Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   "sa" '(counsel-ag :which-key "AG")
+   "sf" '(counsel-find-file :which-key "Find")
+   "sg" '(counsel-grep :which-key "Grep")
+   "sr" '(counsel-rg :which-key "RG")
+   )
+
+  ;; https://oremacs.com/2018/03/05/grep-exclude/
+  ;; -M 120: truncate all lines that are longer than 120 characters
+  (setq counsel-rg-base-command
+      "rg -i -M 120 --no-heading --line-number --color never %s .")
   )
 
 (use-package counsel-projectile
@@ -472,6 +489,20 @@
   :commands restart-emacs
   )
 
+
+;; https://github.com/dajva/rg.el
+(use-package rg
+  :config
+  ;; Prefixed Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   "s." '(rg-dwim :which-key "RG-dwim")
+   "sp" '(rg-project :which-key "RG-project")
+   )
+  )
+
 ;; ----------- S ----------
 
 ;; Solarized Theme
@@ -603,8 +634,6 @@
 
    "s"  '(:ignore t :which-key "Search")
    "ss" '(swiper :which-key "Swiper")
-   "sf" '(counsel-find-file :which-key "Find")
-   "sg" '(counsel-grep :which-key "Grep")
 
    "q"  '(:ignore t :which-key "Quit")
    "qr" '(restart-emacs :which-key "Restart")
