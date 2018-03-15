@@ -435,6 +435,14 @@
   (setq projectile-completion-system 'ivy)
 )
 
+
+;; Powerline is an Emacs version of the Vim powerline.
+;; https://github.com/milkypostman/powerline
+(use-package powerline
+  :config
+  (powerline-evil-vim-color-theme)
+  )
+
 ;; Python Mode
 ;; https://github.com/emacsmirror/python-mode
 (use-package python
@@ -720,6 +728,8 @@
 (load custom-file)
 ;; treat underscores as part of the word
 (modify-syntax-entry ?_ "w")
+;; balance parenthesis
+(electric-pair-mode)
 
 ;; Window configuration
 (when window-system
