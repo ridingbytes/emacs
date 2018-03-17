@@ -127,12 +127,13 @@
              ("C-p" . company-select-previous)
              ("C-t" . company-select-next)
              ("C-s" . company-select-previous)
-             ("TAB" . company-complete))
+             ;; ("TAB" . company-complete)
+             )
 
   ;; (setq company-backends
   (setq company-backends
         '(
-          (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
+          ;; (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
           company-files ;; complete file paths
           company-keywords ;; complete programming language keywords
           company-capf ;; bridge to the standard completion-at-point-functions
@@ -300,7 +301,7 @@
 ;; Git Gutterlus
 ;; https://github.com/nonsequitur/git-gutter-plus
 (use-package git-gutter+
-  :diminish (company-mode . "ⓖ")
+  :diminish (git-gutter+-mode . "ⓖ")
   :config
   (global-git-gutter+-mode t)
 
@@ -440,7 +441,10 @@
 ;; https://github.com/milkypostman/powerline
 (use-package powerline
   :config
-  (powerline-evil-vim-color-theme)
+  (use-package powerline-evil
+    :config
+    (powerline-evil-vim-color-theme)
+    )
   )
 
 ;; Python Mode
@@ -541,7 +545,9 @@
 ;; http://web-mode.org
 (use-package web-mode
   :mode (("\\.html\\'" . web-mode)
-         ("\\.pt\\'"   . web-mode))
+         ("\\.pt\\'"   . web-mode)
+         ("\\.js\\'"   . web-mode)
+         )
   :config
   ;; Script/code offset indentation (for JavaScript, Java, PHP, Ruby, Go, VBScript, Python, etc.)
   (setq web-mode-code-indent-offset 2)
@@ -575,6 +581,9 @@
   (general-evil-setup t)
   ;; (setq evil-disable-insert-state-bindings 1)
 
+  ;; map ESC to Quit
+  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
   ;; Global Key Bindings
   (general-def
    "C-<left>"  'windmove-left
@@ -592,6 +601,9 @@
    "TAB"       'complete-or-indent
    "M-s"       'counsel-ag
    "M-t"       'counsel-projectile
+   "M-["      'insert-pair
+   "M-{"      'insert-pair
+   "M-\""     'insert-pair
    )
 
   ;; Key Bindings
@@ -818,5 +830,6 @@ When using Homebrew, install it using \"brew install trash\"."
 (add-hook 'window-setup-hook
  (lambda ()
    (message "All loaded and ready to go!")
+   (diminish 'undo-tree-mode "")
    )
  )
