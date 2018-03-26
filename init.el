@@ -66,6 +66,7 @@
 ;; Anaconda: Code navigation, documentation lookup and completion for Python
 ;; https://github.com/proofit404/anaconda-mode
 (use-package anaconda-mode
+  :disabled
   :config
 
   (add-hook 'python-mode-hook 'anaconda-mode)
@@ -105,6 +106,7 @@
 ;; Company completes anything
 ;; https://github.com/company-mode/company-mode
 (use-package company
+  :disabled
   :diminish (company-mode . "℀")
   :commands global-company-mode
   :init
@@ -127,13 +129,12 @@
              ("C-p" . company-select-previous)
              ("C-t" . company-select-next)
              ("C-s" . company-select-previous)
-             ;; ("TAB" . company-complete)
              )
 
   ;; (setq company-backends
   (setq company-backends
         '(
-          ;; (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
+          (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
           company-files ;; complete file paths
           company-keywords ;; complete programming language keywords
           company-capf ;; bridge to the standard completion-at-point-functions
@@ -598,7 +599,6 @@
    "M-v"       'cua-paste
    "M-z"       'undo
    "C-M-i"     'complete-symbol
-   "TAB"       'complete-or-indent
    "M-s"       'counsel-ag
    "M-t"       'counsel-projectile
    "M-["      'insert-pair
@@ -783,6 +783,20 @@ When using Homebrew, install it using \"brew install trash\"."
 (add-to-list 'auto-mode-alist '("\\.cpy\\'" . python-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\.dmtl\\'" . css-mode))
 
+;; css-mode
+(add-hook 'css-mode-hook
+          '(lambda()
+             (message "Activating CSS Mode Hook")
+             (setq css-indent-offset 2)
+             (setq indent-tabs-mode nil)))
+
+;; coffee-mode
+(add-hook 'coffee-mode-hook
+          '(lambda()
+             (message "Activating Coffee Mode Hook")
+             (setq coffee-tab-width 2)))
+
+
 ;; CUA Mode
 (cua-mode t)
 (setq-default cua-enable-cua-keys nil)
@@ -813,13 +827,6 @@ When using Homebrew, install it using \"brew install trash\"."
     (delete-region (region-beginning) (region-end) )
     )
   (insert (format-time-string "%Y-%m-%d")))
-
-;; (defun complete-or-indent ()
-;;   (interactive)
-;;   (if (company-manual-begin)
-;;       (company-complete)
-;;     (indent-according-to-mode))
-;;   )
 
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html#Startup-Summary
 (add-hook 'after-init-hook
