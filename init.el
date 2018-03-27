@@ -383,6 +383,12 @@
     )
   )
 
+;; https://github.com/paetzke/py-isort.el
+(use-package py-isort
+  :config
+  (setq py-isort-options '("--force-single-line-imports" "--length-sort"))
+)
+
 ;; ----------- Q ----------
 ;; ----------- R ----------
 
