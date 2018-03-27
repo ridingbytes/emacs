@@ -66,7 +66,6 @@
 ;; Anaconda: Code navigation, documentation lookup and completion for Python
 ;; https://github.com/proofit404/anaconda-mode
 (use-package anaconda-mode
-  :disabled
   :config
 
   (add-hook 'python-mode-hook 'anaconda-mode)
@@ -106,7 +105,6 @@
 ;; Company completes anything
 ;; https://github.com/company-mode/company-mode
 (use-package company
-  :disabled
   :diminish (company-mode . "℀")
   :commands global-company-mode
   :init
