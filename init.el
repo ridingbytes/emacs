@@ -27,10 +27,6 @@
 ;; always download packages if not present
 (setq use-package-always-ensure t)
 
-(use-package general)
-(use-package diminish)
-(use-package bind-key)
-
 ;; -------- General Leaders -------
 
 ;; Key binding for normal state
@@ -62,23 +58,6 @@
    )
   )
 
-
-;; Anaconda: Code navigation, documentation lookup and completion for Python
-;; https://github.com/proofit404/anaconda-mode
-(use-package anaconda-mode
-  :config
-
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-
-  ;; Anaconda backend for company-mode.
-  ;; https://github.com/proofit404/company-anaconda
-  (use-package company-anaconda
-    :config
-    (add-to-list 'company-backends '(company-anaconda :with company-capf))
-    )
-  )
-
 ;; ----------- B ----------
 ;; ----------- C ----------
 
@@ -100,48 +79,6 @@
 
   (add-hook 'coffee-mode-hook
             '(lambda() (coffee-custom)))
-  )
-
-;; Company completes anything
-;; https://github.com/company-mode/company-mode
-(use-package company
-  :diminish (company-mode . "℀")
-  :commands global-company-mode
-  :init
-  (add-hook 'after-init-hook #'global-company-mode)
-
-  (setq
-   company-idle-delay 0.2
-   company-selection-wrap-around t
-   company-minimum-prefix-length 2
-   company-require-match nil
-   company-show-numbers t)
-
-  :config
-  (global-company-mode t)
-
-  (bind-keys :map company-active-map
-             ("C-d" . company-show-doc-buffer)
-             ("C-l" . company-show-location)
-             ("C-n" . company-select-next)
-             ("C-p" . company-select-previous)
-             ("C-t" . company-select-next)
-             ("C-s" . company-select-previous)
-             )
-
-  ;; (setq company-backends
-  (setq company-backends
-        '(
-          (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
-          company-files ;; complete file paths
-          company-keywords ;; complete programming language keywords
-          company-capf ;; bridge to the standard completion-at-point-functions
-          ;; facility. Supports any major mode that defines a proper completion
-          ;; function, including emacs-lisp-mode, css-mode and nxml-mode
-          company-dabbrev ;; complete keywords from buffer
-          )
-        )
-  (setq company-dabbrev-downcase nil)
   )
 
 
@@ -446,19 +383,6 @@
     )
   )
 
-;; Python Mode
-;; https://github.com/emacsmirror/python-mode
-(use-package python
-  ;; https://github.com/jwiegley/use-package#modes-and-interpreters
-  :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python" . python-mode)
-  :config
-  (if (executable-find "ipython")
-      (setq python-shell-interpreter "ipython"
-            python-shell-interpreter-args "--simple-prompt -i --pprint")
-    (setq python-shell-interpreter "python"))
-  )
-
 ;; ----------- Q ----------
 ;; ----------- R ----------
 
@@ -599,9 +523,6 @@
    "C-M-i"     'complete-symbol
    "M-s"       'counsel-ag
    "M-t"       'counsel-projectile
-   "M-["      'insert-pair
-   "M-{"      'insert-pair
-   "M-\""     'insert-pair
    )
 
   ;; Key Bindings
