@@ -61,6 +61,46 @@
 ;; ----------- B ----------
 ;; ----------- C ----------
 
+
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode)
+
+  (setq company-tooltip-limit 10)
+  (setq company-idle-delay 0.2)
+  (setq company-echo-delay 0)
+  (setq company-minimum-prefix-length 2)
+  (setq company-require-match nil)
+  (setq company-selection-wrap-around t)
+  (setq company-tooltip-align-annotations t)
+  (setq company-tooltip-flip-when-above t)
+  (setq company-transformers '(company-sort-by-occurrence)) ; weight by frequency
+  (setq company-dabbrev-downcase nil)
+  (setq company-dabbrev-ignore-case nil)
+
+  ;; Python auto completion
+  (use-package company-jedi
+    :ensure t
+    :init
+    (setq company-jedi-python-bin "python")
+    :config
+    (add-to-list 'company-backends 'company-jedi))
+
+  ;; HTML completion
+  (use-package company-web
+    :ensure t
+    :bind (("C-c w" . company-web-html))
+    :config
+    (add-to-list 'company-backends 'company-web-html))
+
+  (use-package company-statistics
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'company-statistics-mode))
+  )
+
+
 ;; CoffeeScript
 (use-package coffee-mode
   :mode (("\\.coffee\\'" . coffee-mode))
@@ -490,6 +530,17 @@
 
 ;; ----------- T ----------
 ;; ----------- U ----------
+
+;; Present nice undo tree, activated with C-x u.
+(use-package undo-tree
+  :ensure t
+  :diminish
+  :config
+  (global-undo-tree-mode)
+  (setq undo-tree-visualizer-timestamps t
+        undo-tree-visualizer-diff t))
+
+
 ;; ----------- V ----------
 ;; ----------- W ----------
 
