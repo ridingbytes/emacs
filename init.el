@@ -95,7 +95,20 @@
     :init
     (setq company-jedi-python-bin "python")
     :config
-    (add-to-list 'company-backends 'company-jedi))
+    (add-to-list 'company-backends 'company-jedi)
+
+    ;; Key Bindings
+    (general-define-key
+     :states '(normal visual insert emacs)
+     :prefix rb--global-leader
+     :non-normal-prefix rb--global-non-normal-leader
+     "j"  '(:ignore t :which-key "Jump")
+     "jd" '(jedi:goto-definition :which-key "Go to definition")
+     "jn" '(jedi:goto-definition-next :which-key "Go to next definition")
+     "jp" '(jedi:goto-definition-pop-marker :which-key "Pop definition marker")
+     )
+    )
+
 
   ;; HTML completion
   (use-package company-web
