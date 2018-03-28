@@ -394,7 +394,6 @@
 (use-package python
   ;; https://github.com/jwiegley/use-package#modes-and-interpreters
   :mode (("\\.py\\'" . python-mode)
-         ("\\.cpy\\'" .python-mode)
          )
   :interpreter ("python" . python-mode)
   :config
@@ -683,6 +682,8 @@
 (save-place-mode 1)
 ;; No region when it is not highlighted
 (transient-mark-mode 1)
+;; Replace marked block with input.
+(delete-selection-mode t)
 ;; No confirmation for large file loading < 500MB
 (setq large-file-warning-threshold 500000000)
 ;; move custom-set-* to separate file
@@ -692,6 +693,13 @@
 (modify-syntax-entry ?_ "w")
 ;; balance parenthesis
 (electric-pair-mode)
+
+(setq-default initial-scratch-message
+              (message
+               ";; GNU Emacs %s, started on: %s, init time took: %s.\n"
+               emacs-version
+               (current-time-string)
+               (emacs-init-time)))
 
 ;; Window configuration
 (when window-system
