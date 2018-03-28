@@ -552,6 +552,54 @@
 (use-package smex)
 
 ;; ----------- T ----------
+
+;; Allow to easily move frames.
+;; https://www.emacswiki.org/emacs/TransposeFrame
+(use-package transpose-frame
+  :config
+  ;; Prefixed Key Bindings
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix rb--global-leader
+   :non-normal-prefix rb--global-non-normal-leader
+   )
+  )
+
+
+;; https://github.com/Alexander-Miller/treemacs
+(use-package treemacs
+  :bind
+  (:map global-map ([f10] . #'treemacs-find-file))
+  :config
+  (progn
+    (setq treemacs-follow-after-init          t
+          treemacs-width                      35
+          treemacs-indentation                2
+          treemacs-git-integration            t
+          treemacs-collapse-dirs              3
+          treemacs-silent-refresh             nil
+          treemacs-change-root-without-asking t
+          treemacs-sorting                    'alphabetic-desc
+          treemacs-show-hidden-files          t
+          treemacs-never-persist              nil
+          treemacs-is-never-other-window      nil
+          treemacs-goto-tag-strategy          'refetch-index
+          treemacs-silent-filewatch           t
+          treemacs-silent-refresh             t)
+    (treemacs-tag-follow-mode t)
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t))
+  )
+
+
+(use-package treemacs-projectile
+  :ensure t
+  :bind
+  (:map global-map ([f9] . treemacs-projectile-toggle))
+  :config
+  (setq treemacs-header-function #'treemacs-projectile-create-header))
+
+
 ;; ----------- U ----------
 
 ;; Present nice undo tree, activated with C-x u.
