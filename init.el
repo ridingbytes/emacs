@@ -58,6 +58,16 @@
    )
   )
 
+;; Hihghlight symbol under cursor.
+;; https://github.com/mhayashi1120/auto-highlight-symbol-mode
+(use-package auto-highlight-symbol
+  :diminish
+  :config
+  (global-auto-highlight-symbol-mode t)
+  ;; Functions begin with ahs-...
+  (setq ahs-default-range 'ahs-range-whole-buffer)
+  )
+
 ;; ----------- B ----------
 ;; ----------- C ----------
 
