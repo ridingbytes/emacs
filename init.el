@@ -38,6 +38,7 @@
 ;; ----------- A ----------
 
 (use-package ace-jump-mode
+  :defer t
   :diminish (ace-jump-mode . "ⓐ")
   :bind ("C-j" . ace-jump-mode))
 
@@ -45,6 +46,7 @@
 ;; Ag.el allows you to search using ag from inside Emacs
 ;; http://agel.readthedocs.io/en/latest/index.html
 (use-package ag
+  :defer t
   :config
   (setq ag-highlight-search t)
   (setq ag-reuse-buffers t)
@@ -61,6 +63,7 @@
 ;; Hihghlight symbol under cursor.
 ;; https://github.com/mhayashi1120/auto-highlight-symbol-mode
 (use-package auto-highlight-symbol
+  :defer t
   :diminish
   :config
   (global-auto-highlight-symbol-mode t)
@@ -73,7 +76,7 @@
 
 
 (use-package company
-  :ensure t
+  :defer t
   :config
   (global-company-mode)
 
@@ -177,6 +180,7 @@
   )
 
 (use-package counsel-projectile
+  :defer t
   :config
   (counsel-projectile-mode)
   )
@@ -185,6 +189,7 @@
 ;; Start OSX app
 ;; https://github.com/d12frosted/counsel-osx-app
 (use-package counsel-osx-app
+  :defer t
   :commands (counsel-osx-app)
   :bind
   ("C-c a" . counsel-osx-app)
@@ -289,10 +294,6 @@
 
 ;; ----------- G ----------
 
-;; Gitter
-;; https://github.com/xuchunyang/gitter.el
-(use-package gitter)
-
 (use-package github-browse-file
   :commands (github-browse-file github-browse-file-blame)
   )
@@ -300,9 +301,10 @@
 ;; Git Gutterlus
 ;; https://github.com/nonsequitur/git-gutter-plus
 (use-package git-gutter+
+  :hook (prog-mode . git-gutter+-mode)
   :diminish (git-gutter+-mode . "ⓖ")
   :config
-  (global-git-gutter+-mode t)
+  ;; (global-git-gutter+-mode t)
 
   ;; Key Bindings
   (general-define-key
@@ -339,6 +341,13 @@
   )
 
 ;; ----------- J ----------
+
+(use-package js2-mode
+   :mode "\\.js\\'"
+   :config
+   (add-to-list 'interpreter-mode-alist '("nodejs" . js2-mode))
+   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
+
 ;; ----------- K ----------
 ;; ----------- L ----------
 ;; ----------- M ----------
@@ -448,6 +457,7 @@
 
 ;; https://github.com/paetzke/py-isort.el
 (use-package py-isort
+  :commands (py-isort-region)
   :config
   (setq py-isort-options '("--force-single-line-imports" "--length-sort"))
 )
@@ -456,8 +466,7 @@
 ;; https://github.com/emacsmirror/python-mode
 (use-package python
   ;; https://github.com/jwiegley/use-package#modes-and-interpreters
-  :mode (("\\.py\\'" . python-mode)
-         )
+  :mode (("\\.py\\'" . python-mode))
   :interpreter ("python" . python-mode)
   :config
 
@@ -473,9 +482,7 @@
 ;; Highlights delimiters such as parentheses, brackets or braces according to their depth
 ;; https://github.com/Fanael/rainbow-delimiters
 (use-package rainbow-delimiters
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 
 (use-package ranger
@@ -556,6 +563,7 @@
 ;; Allow to easily move frames.
 ;; https://www.emacswiki.org/emacs/TransposeFrame
 (use-package transpose-frame
+  :defer t
   :config
   ;; Prefixed Key Bindings
   (general-define-key
@@ -568,6 +576,7 @@
 
 ;; https://github.com/Alexander-Miller/treemacs
 (use-package treemacs
+  :defer 10
   :bind
   (:map global-map ([f10] . #'treemacs-find-file))
   :config
@@ -621,7 +630,6 @@
   :mode (("\\.html\\'" . web-mode)
          ("\\.pt\\'"   . web-mode)
          ("\\.cpt\\'"  . web-mode)
-         ("\\.js\\'"   . web-mode)
          )
   :config
   ;; Script/code offset indentation (for JavaScript, Java, PHP, Ruby, Go, VBScript, Python, etc.)
@@ -636,6 +644,7 @@
 ;; Which-key displays the key bindings following your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
+  :defer t
   :diminish (which-key-mode . "ⓦ")
   :init (which-key-mode 1) ; enable which-key globally at startup
   :config
