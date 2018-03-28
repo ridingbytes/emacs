@@ -389,8 +389,32 @@
   (setq py-isort-options '("--force-single-line-imports" "--length-sort"))
 )
 
+;; Python Mode
+;; https://github.com/emacsmirror/python-mode
+(use-package python
+  ;; https://github.com/jwiegley/use-package#modes-and-interpreters
+  :mode (("\\.py\\'" . python-mode)
+         ("\\.cpy\\'" .python-mode)
+         )
+  :interpreter ("python" . python-mode)
+  :config
+
+  (if (executable-find "ipython")
+      (setq python-shell-interpreter "ipython"
+            python-shell-interpreter-args "--simple-prompt -i --pprint")
+    (setq python-shell-interpreter "python"))
+  )
+
 ;; ----------- Q ----------
 ;; ----------- R ----------
+
+;; Highlights delimiters such as parentheses, brackets or braces according to their depth
+;; https://github.com/Fanael/rainbow-delimiters
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
 
 (use-package ranger
   :commands
@@ -475,6 +499,7 @@
 (use-package web-mode
   :mode (("\\.html\\'" . web-mode)
          ("\\.pt\\'"   . web-mode)
+         ("\\.cpt\\'"  . web-mode)
          ("\\.js\\'"   . web-mode)
          )
   :config
@@ -701,12 +726,8 @@ When using Homebrew, install it using \"brew install trash\"."
 
 ;; Auto load mode on file extension
 (add-to-list 'auto-mode-alist '("\\.zcml\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.pt\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.cpt\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.po\\'" . conf-mode))
 (add-to-list 'auto-mode-alist '("\\.pot\\'" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.cpy\\'" . python-mode))
-(add-to-list 'auto-mode-alist '("\\.css\\.dmtl\\'" . css-mode))
 
 ;; css-mode
 (add-hook 'css-mode-hook
