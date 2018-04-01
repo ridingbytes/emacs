@@ -13,3 +13,4 @@ anaconda-mode
 /company-statistics-cache.el
 /company.el
 /semanticdb
+flycheck_init.el

@@ -38,7 +38,6 @@
 ;; ----------- A ----------
 
 (use-package ace-jump-mode
-  :defer t
   :diminish (ace-jump-mode . "ⓐ")
   :bind ("C-j" . ace-jump-mode))
 
@@ -46,7 +45,6 @@
 ;; Ag.el allows you to search using ag from inside Emacs
 ;; http://agel.readthedocs.io/en/latest/index.html
 (use-package ag
-  :defer t
   :config
   (setq ag-highlight-search t)
   (setq ag-reuse-buffers t)
@@ -63,7 +61,6 @@
 ;; Hihghlight symbol under cursor.
 ;; https://github.com/mhayashi1120/auto-highlight-symbol-mode
 (use-package auto-highlight-symbol
-  :defer t
   :diminish
   :config
   (global-auto-highlight-symbol-mode t)
@@ -76,7 +73,6 @@
 
 
 (use-package company
-  :defer t
   :config
   (global-company-mode)
 
@@ -92,40 +88,65 @@
   (setq company-dabbrev-downcase nil)
   (setq company-dabbrev-ignore-case nil)
 
-  ;; Python auto completion
-  (use-package company-jedi
-    :ensure t
-    :init
-    (setq company-jedi-python-bin "python")
-    :config
-    (add-to-list 'company-backends 'company-jedi)
+  ;; (setq company-backends
+  ;;       '(
+  ;;         (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
+  ;;         company-etags
+  ;;         company-files ;; complete file paths
+  ;;         company-keywords ;; complete programming language keywords
+  ;;         company-capf ;; bridge to the standard completion-at-point-functions
+  ;;         ;; facility. Supports any major mode that defines a proper completion
+  ;;         ;; function, including emacs-lisp-mode, css-mode and nxml-mode
+  ;;         company-dabbrev ;; complete keywords from buffer
+  ;;         )
+  ;;       )
 
-    ;; Key Bindings
-    (general-define-key
-     :states '(normal visual insert emacs)
-     :prefix rb--global-leader
-     :non-normal-prefix rb--global-non-normal-leader
-     "j"  '(:ignore t :which-key "Jump")
-     "jd" '(jedi:goto-definition :which-key "Go to definition")
-     "jn" '(jedi:goto-definition-next :which-key "Go to next definition")
-     "jp" '(jedi:goto-definition-pop-marker :which-key "Pop definition marker")
-     )
+  ;; ;; Python auto completion
+  ;; (use-package company-jedi
+  ;;   :ensure t
+  ;;   :init
+  ;;   (setq company-jedi-python-bin "python")
+  ;;   :config
+  ;;   (add-to-list 'company-backends 'company-jedi)
+
+  ;;   ;; Key Bindings
+  ;;   (general-define-key
+  ;;    :states '(normalvisual insert emacs)
+  ;;    :prefix rb--global-leader
+  ;;    :non-normal-prefix rb--global-non-normal-leader
+  ;;    "j"  '(:ignore t :which-key "Jump")
+  ;;    "jd" '(jedi:goto-definition :which-key "Go to definition")
+  ;;    "jn" '(jedi:goto-definition-next :which-key "Go to next definition")
+  ;;    "jp" '(jedi:goto-definition-pop-marker :which-key "Pop definition marker")
+  ;;    )
+  ;;   )
+
+  ;; Anaconda: Code navigation, documentation lookup and completion for Python
+  ;; https://github.com/proofit404/anaconda-mode
+  (use-package anaconda-mode
+    :config
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
     )
 
+  ;; Anaconda backend for company-mode.
+  ;; https://github.com/proofit404/company-anaconda
+  (use-package company-anaconda
+    :config
+    (add-to-list 'company-backends '(company-anaconda :with company-capf))
+    )
 
   ;; HTML completion
   (use-package company-web
-    :ensure t
     :bind (("C-c w" . company-web-html))
     :config
     (add-to-list 'company-backends 'company-web-html))
 
   (use-package company-statistics
-    :ensure t
     :config
     (add-hook 'after-init-hook 'company-statistics-mode))
-  )
 
+  )
 
 ;; CoffeeScript
 (use-package coffee-mode
@@ -171,6 +192,7 @@
    "sf" '(counsel-find-file :which-key "Find")
    "sg" '(counsel-grep :which-key "Grep")
    "sr" '(counsel-rg :which-key "RG")
+   "st" '(counsel-etags-find-tag-at-point :which-key "Find Tag")
    )
 
   ;; https://oremacs.com/2018/03/05/grep-exclude/
@@ -180,16 +202,17 @@
   )
 
 (use-package counsel-projectile
-  :defer t
   :config
   (counsel-projectile-mode)
+  )
+
+(use-package counsel-etags
   )
 
 
 ;; Start OSX app
 ;; https://github.com/d12frosted/counsel-osx-app
 (use-package counsel-osx-app
-  :defer t
   :commands (counsel-osx-app)
   :bind
   ("C-c a" . counsel-osx-app)
@@ -459,7 +482,7 @@
 (use-package py-isort
   :commands (py-isort-region)
   :config
-  (setq py-isort-options '("--force-single-line-imports" "--length-sort"))
+  (setq py-isort-options '("--force-single-line-imports"))
 )
 
 ;; Python Mode
@@ -563,7 +586,6 @@
 ;; Allow to easily move frames.
 ;; https://www.emacswiki.org/emacs/TransposeFrame
 (use-package transpose-frame
-  :defer t
   :config
   ;; Prefixed Key Bindings
   (general-define-key
@@ -576,7 +598,6 @@
 
 ;; https://github.com/Alexander-Miller/treemacs
 (use-package treemacs
-  :defer 10
   :bind
   (:map global-map ([f10] . #'treemacs-find-file))
   :config
@@ -644,7 +665,6 @@
 ;; Which-key displays the key bindings following your currently entered incomplete command
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
-  :defer t
   :diminish (which-key-mode . "ⓦ")
   :init (which-key-mode 1) ; enable which-key globally at startup
   :config
@@ -666,7 +686,7 @@
   ;; (setq evil-disable-insert-state-bindings 1)
 
   ;; map ESC to Quit
-  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+  ;; (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 
   ;; Global Key Bindings
   (general-def
@@ -824,6 +844,8 @@
 (modify-syntax-entry ?_ "w")
 ;; balance parenthesis
 (electric-pair-mode)
+;; smart tab behavior - indent or complete
+(setq tab-always-indent 'complete)
 
 (setq-default initial-scratch-message
               (message
