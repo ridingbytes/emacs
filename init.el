@@ -350,6 +350,16 @@
   )
 
 ;; ----------- H ----------
+
+(use-package hydra
+  :config
+  (defhydra hydra-zoom (global-map "<f12>")
+    "zoom"
+    ("+" text-scale-adjust "in")
+    ("-" text-scale-adjust "out")
+    ("0" text-scale-adjust "standard")
+    ))
+
 ;; ----------- I ----------
 
 ;; Ivy, a generic completion mechanism for Emacs.
