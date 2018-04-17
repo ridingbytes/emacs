@@ -73,6 +73,7 @@
 
 
 (use-package company
+  :diminish (company-mode . "AC")
   :config
   (global-company-mode)
 
@@ -82,44 +83,23 @@
   (setq company-minimum-prefix-length 2)
   (setq company-require-match nil)
   (setq company-selection-wrap-around t)
-  (setq company-tooltip-align-annotations t)
+  (setq company-tooltip-align-annotations nil)
   (setq company-tooltip-flip-when-above t)
   (setq company-transformers '(company-sort-by-occurrence)) ; weight by frequency
   (setq company-dabbrev-downcase nil)
   (setq company-dabbrev-ignore-case nil)
 
-  ;; (setq company-backends
-  ;;       '(
-  ;;         (company-anaconda :with company-capf) ;; use company-anaconda and ignore company-capf
-  ;;         company-etags
-  ;;         company-files ;; complete file paths
-  ;;         company-keywords ;; complete programming language keywords
-  ;;         company-capf ;; bridge to the standard completion-at-point-functions
-  ;;         ;; facility. Supports any major mode that defines a proper completion
-  ;;         ;; function, including emacs-lisp-mode, css-mode and nxml-mode
-  ;;         company-dabbrev ;; complete keywords from buffer
-  ;;         )
-  ;;       )
+  (setq company-backends
+        '(
+          (
+           company-files
+           company-dabbrev
+           company-keywords
+           company-capf
+           )
+          (company-abbrev company-dabbrev)
+          ))
 
-  ;; ;; Python auto completion
-  ;; (use-package company-jedi
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq company-jedi-python-bin "python")
-  ;;   :config
-  ;;   (add-to-list 'company-backends 'company-jedi)
-
-  ;;   ;; Key Bindings
-  ;;   (general-define-key
-  ;;    :states '(normalvisual insert emacs)
-  ;;    :prefix rb--global-leader
-  ;;    :non-normal-prefix rb--global-non-normal-leader
-  ;;    "j"  '(:ignore t :which-key "Jump")
-  ;;    "jd" '(jedi:goto-definition :which-key "Go to definition")
-  ;;    "jn" '(jedi:goto-definition-next :which-key "Go to next definition")
-  ;;    "jp" '(jedi:goto-definition-pop-marker :which-key "Pop definition marker")
-  ;;    )
-  ;;   )
 
   ;; Anaconda: Code navigation, documentation lookup and completion for Python
   ;; https://github.com/proofit404/anaconda-mode
@@ -134,6 +114,7 @@
   (use-package company-anaconda
     :config
     (add-to-list 'company-backends '(company-anaconda :with company-capf))
+    (setq company-backends (delete 'company-etags company-backends))
     )
 
   ;; HTML completion
@@ -223,6 +204,10 @@
 
 
 ;; ----------- D ----------
+
+;; https://github.com/emacsmirror/diminish
+(use-package diminish)
+
 
 ;; Dumb-jump to definition
 (use-package dumb-jump
@@ -378,6 +363,7 @@
 (use-package js2-mode
    :mode "\\.js\\'"
    :config
+   (setq js2-basic-offset 2)
    (add-to-list 'interpreter-mode-alist '("nodejs" . js2-mode))
    (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
 
@@ -475,6 +461,25 @@
   (projectile-mode 1)
   (setq projectile-switch-project-action 'projectile-find-file)
   (setq projectile-completion-system 'ivy)
+
+  (defun my-switch-project-hook ()
+    "Perform some action after switching Projectile projects."
+
+    (setq omelette (concat (projectile-project-root) "parts/omelette"))
+    (if (file-directory-p omelette)
+        (progn
+          (add-to-list 'python-shell-extra-pythonpaths omelette)
+          (message "Added %s to python-shell-extra-pythonpaths" omelette)
+          )
+      nil)
+
+    ;; Do something interesting here...
+    ;;
+    ;; `projectile-current-project-files', and `projectile-current-project-dirs' can be used
+    ;; to get access to the new project's files, and directories.
+    )
+
+  (add-hook 'projectile-after-switch-project-hook #'my-switch-project-hook)
 )
 
 
@@ -541,6 +546,8 @@
    "rd" '(deer :which-key "Deer")
    )
 
+  (ranger-override-dired-mode t)
+  (setq ranger-omit-regexp "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\.pyc$\\|\.pyo$|\.mo$")
 
   ;; remove all buffers on close
   (setq ranger-cleanup-eagerly t)
