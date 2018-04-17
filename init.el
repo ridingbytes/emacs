@@ -191,18 +191,6 @@
   )
 
 
-;; Start OSX app
-;; https://github.com/d12frosted/counsel-osx-app
-(use-package counsel-osx-app
-  :commands (counsel-osx-app)
-  :bind
-  ("C-c a" . counsel-osx-app)
-  :config
-  (setq counsel-osx-app-location
-        '("/Applications/" "~/Applications/"))
-  )
-
-
 ;; ----------- D ----------
 
 ;; https://github.com/emacsmirror/diminish
@@ -396,6 +384,21 @@
              magit-status
              magit-unstage-file
              magit-blame-mode)
+  :config
+  (setq magit-display-buffer-function  ;; Make Magit Fullscreen
+	(lambda (buffer)
+	  (if magit-display-buffer-noselect
+	      ;; the code that called `magit-display-buffer-function'
+	      ;; expects the original window to stay alive, we can't go
+	      ;; fullscreen
+	      (magit-display-buffer-traditional buffer)
+	    (delete-other-windows)
+	    ;; make sure the window isn't dedicated, otherwise
+	    ;; `set-window-buffer' throws an error
+	    (set-window-dedicated-p nil nil)
+	    (set-window-buffer nil buffer)
+	    ;; return buffer's window
+	    (get-buffer-window buffer))))
  )
 
 ;; ----------- N ----------
@@ -534,7 +537,6 @@
    "-" 'ranger-up-directory		; c
    "j" 'ranger-toggle-mark		; t
    )
-
   :config
   ;; Prefixed Key Bindings
   (general-define-key
@@ -814,16 +816,16 @@
 ;; no Dialog Boxes
 (setq use-dialog-box nil)
 ;; always use spaces
-(setq-default indent-tabs-mode nil
-              tab-width 4)
+(setq indent-tabs-mode nil
+      tab-width 4)
 ;; always show Line Numbers
 (global-linum-mode t)
 ;; display line number in mode line
 (line-number-mode t)
 ;; display colum number in mode line
-(column-number-mode t)
+;; (column-number-mode t)
 ;; show trailing whitespaces
-(setq-default show-trailing-whitespace t)
+(setq show-trailing-whitespace t)
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
