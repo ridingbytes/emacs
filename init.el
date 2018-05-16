@@ -527,6 +527,7 @@
 
 
 (use-package ranger
+  :init
   :commands
   (ranger deer)
   :general
@@ -538,6 +539,8 @@
    "j" 'ranger-toggle-mark		; t
    )
   :config
+  (evil-set-initial-state 'ranger-mode 'normal)
+
   ;; Prefixed Key Bindings
   (general-define-key
    :states '(normal visual insert emacs)
@@ -553,6 +556,7 @@
 
   ;; remove all buffers on close
   (setq ranger-cleanup-eagerly t)
+
   )
 
 (use-package recentf
@@ -678,6 +682,8 @@
   (setq web-mode-css-indent-offset 2)
   ;; HTML element offset indentation
   (setq web-mode-markup-indent-offset 2)
+  ;; No tabs
+  (setq-default indent-tabs-mode nil)
   )
 
 
@@ -816,7 +822,7 @@
 ;; no Dialog Boxes
 (setq use-dialog-box nil)
 ;; always use spaces
-(setq indent-tabs-mode nil
+(setq-default indent-tabs-mode nil
       tab-width 4)
 ;; always show Line Numbers
 (global-linum-mode t)
@@ -825,7 +831,7 @@
 ;; display colum number in mode line
 ;; (column-number-mode t)
 ;; show trailing whitespaces
-(setq show-trailing-whitespace t)
+(setq-default show-trailing-whitespace t)
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
